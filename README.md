@@ -1,0 +1,1 @@
+This simple application was develop in case of testing different ways of fetching datafrom external API in JavaScript.
