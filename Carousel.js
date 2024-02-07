@@ -1,4 +1,5 @@
-import * as bootstrap from "bootstrap";
+//import * as bootstrap from "bootstrap";
+const bootstrap = Window.bootstrap;
 import { favourite } from "./index.js";
 
 export function createCarouselItem(imgSrc, imgAlt, imgId) {
