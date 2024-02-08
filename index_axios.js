@@ -170,18 +170,25 @@ function createAdditionalInformation(breedInfo) {
  */
 function clearTable() {
     const name = breedInfoTable.querySelector("#breed-name")
-    name.textContent="";
+    name.textContent = "";
     const cells = breedInfoTable.querySelectorAll("td");
     for (let index = 0; index < cells.length; index++) {
         if (cells[index].getAttribute('id')) {
             cells[index].textContent = "";
-        }      
+        }
 
     }
 
 }
 
-
+/************************************************************* */
+const fetchChange = document.getElementById("change");
+fetchChange.textContent = "Change fetch method to Fetch!"
+fetchChange.onclick = changeScriptFile
+function changeScriptFile() {
+    const mainJSfile = document.getElementById("mainJSfile")
+    mainJSfile.setAttribute("src", "index.js")
+}
 
 
 /**
