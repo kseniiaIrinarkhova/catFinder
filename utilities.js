@@ -1,8 +1,8 @@
 //import carousel functions
 import * as Carousel from "./Carousel.js";
 
-// Step 0: Store your API key here for reference and easy access.
-const API_KEY = "live_S30DSBzPaRQQFXxA0mjdkXTwpBXwEUFvkol8yBJ3QPnD3UUItjNHtZCg608Yqi3w";
+// Store your API key here for reference and easy access.
+const API_KEY = "PUT YOUR OWN KEY HERE";
 
 //UserId for post requests
 const SUB_ID = 'seny-iri';
