@@ -118,27 +118,52 @@ function getImages(breed_id) {
 }
 
 /**
- * 8. To practice posting data, we'll create a system to "favourite" certain images.
- * - The skeleton of this function has already been created for you.
- * - This function is used within Carousel.js to add the event listener as items are created.
- *  - This is why we use the export keyword for this function.
- * - Post to the cat API's favourites endpoint with the given ID.
- * - The API documentation gives examples of this functionality using fetch(); use Axios!
- * - Add additional logic to this function such that if the image is already favourited,
- *   you delete that favourite using the API, giving this function "toggle" functionality.
- * - You can call this function by clicking on the heart at the top right of any image.
+ * Function that add or delete image from favorites
+ * @param {string} imgId image ID 
  */
 export async function favourite(imgId) {
-    // your code here
-    const requestBody = {
-        "image_id": imgId,
-        "sub_id": "seny-iri"
-    }
-    const url = "https://api.thecatapi.com/v1/favourites"
-
-    const response = await instance.post(url, requestBody);
-    console.log(response);
-    return response;
+    //url for checking id the picture is in our favorite list
+    let url = `https://api.thecatapi.com/v1/favourites?sub_id=${Utilities.SUB_ID}&image_id=${imgId}`
+    //let response = await instance.get(url);
+    instance.get(url)
+    .then((response)=>{
+        //if we get data - then picture in favorites
+        if(response.data.length){
+            //take this favoriteID from response
+            url = `https://api.thecatapi.com/v1/favourites/${response.data[0].id}`
+            //try to delete image from favorites
+            return instance.delete(url)
+            .then((delResponse)=>{
+                //if successfull - show the alert
+                alert("Image was deleted from your favorites!")
+                return delResponse;
+            })
+            .catch((err)=>{throw err});
+        }
+        else{
+            //if we don't have picture with imgID in favorites - add it
+            //prepate body of post request
+            const requestBody = {
+                "image_id": imgId, //image id
+                "sub_id": Utilities.SUB_ID //user ID
+            }
+            //change API end point url
+            url = "https://api.thecatapi.com/v1/favourites"
+            //try to post image to favorites
+            return instance.post(url, requestBody)
+            .then((res)=>{
+                //if successful - show alert
+                alert("Image was added to your favorites!")
+                return res;
+            })
+            .catch((err)=>{throw err});
+        }
+    })
+    .then((response)=>{
+        //if all actions are successful - return the responce
+        return response;
+    })
+    .catch((err)=>{console.log(err)})
 }
 
 /**

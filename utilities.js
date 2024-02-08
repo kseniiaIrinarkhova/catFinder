@@ -4,6 +4,8 @@ import * as Carousel from "./Carousel.js";
 // Step 0: Store your API key here for reference and easy access.
 const API_KEY = "live_S30DSBzPaRQQFXxA0mjdkXTwpBXwEUFvkol8yBJ3QPnD3UUItjNHtZCg608Yqi3w";
 
+//UserId for post requests
+const SUB_ID = 'seny-iri';
 
 /**
  * Helper function that creates options for select element and add them to DOM
@@ -114,4 +116,4 @@ function changeFetchingType(typeName, jsFileName){
     }
 }
 
-export { createOptions, createCarousel, createAdditionalInformation, changeFetchingType, API_KEY }
+export { createOptions, createCarousel, createAdditionalInformation, changeFetchingType, API_KEY, SUB_ID }
