@@ -1,6 +1,6 @@
 import * as Carousel from "./Carousel.js";
-// import axios from "axios";
-const axios = Window.axios;
+ import axios from "axios";
+//const axios = Window.axios;
 
 // The breed selection input element.
 const breedSelect = document.getElementById("breedSelect");
@@ -95,6 +95,9 @@ function getImages(breed_id){
             return response.json();
         })
         .then((data) => {
+Carousel.start();
+let item = Carousel.createCarouselItem(data[0].url,"Cat", data[0].id);
+Carousel.appendCarousel(item)
 
             console.log(data)
         })
