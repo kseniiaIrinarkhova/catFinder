@@ -22,14 +22,40 @@ const API_KEY = "live_S30DSBzPaRQQFXxA0mjdkXTwpBXwEUFvkol8yBJ3QPnD3UUItjNHtZCg60
  *  - Each option should display text equal to the name of the breed.
  * This function should execute immediately.
  */
-(async function initialLoad(){
+/**
+ * Async function that gets breeds name from TheCat API and sdd them to select element
+ */
+(async function initialLoad() {
+    //API end point to get breeds
     const url = `https://api.thecatapi.com/v1/breeds`;
+    //get result
     const response = await fetch(url, {
         headers: {
             'x-api-key': API_KEY
-        }});
-    console.log(await response.json())
+        }
+    });
+    //get JSON list of breeds
+    const breeds = await response.json();
+    //create options and add them to select
+    createOptions(breeds);
 })();
+
+/**
+ * Helper function that creates options for select element and add them to DOM
+ * @param {list of objects} objectList 
+ */
+function createOptions(objectList) {
+
+    objectList.forEach(element => {
+        //create new option element
+        const optionElement = document.createElement("option");
+        //add value attribute and text
+        optionElement.setAttribute("value", element.id);
+        optionElement.textContent = element.name
+        //append to select element new child
+        breedSelect.appendChild(optionElement);
+    });
+}
 /**
  * 2. Create an event handler for breedSelect that does the following:
  * - Retrieve information on the selected breed from the cat API using fetch().
