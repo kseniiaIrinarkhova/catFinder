@@ -9,7 +9,7 @@ This simple application was develop in case of testing different ways of fetchin
 
 3. You also could change SUB_ID value if you want to personolize a little bit this project. This variable save username for post method.
 
-The scope of tasks:
+## The scope of tasks:
 
 1. [x] Create an async function "initialLoad" that does the following:
 * Retrieve a list of breeds from the cat API using fetch().
