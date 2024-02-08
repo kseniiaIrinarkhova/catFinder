@@ -7,6 +7,9 @@ const breedSelect = document.getElementById("breedSelect");
 const breedInfoTable = document.getElementById("breedInfo");
 
 
+//provide a link to page with another type of fetching
+Utilities.changeFetchingType("Axios", "index_axios.js")
+
 /**
  * Async function that gets breeds name from TheCat API and sdd them to select element
  */
@@ -47,7 +50,7 @@ function selectBreed(event) {
  */
 function getImages(breed_id) {
     //create url for getting not more than 10 random pictures of selected breed ID
-    const url = `https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=${breed_id}&api_key=${API_KEY}`
+    const url = `https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=${breed_id}&api_key=${Utilities.API_KEY}`
     //fetch data
     fetch(url)
         .then((response) => {
@@ -56,7 +59,10 @@ function getImages(breed_id) {
         .then((data) => {
             //create carousel from images
             Utilities.createCarousel(data);
+            //create table with additional information about breed
             Utilities.createAdditionalInformation(data[0].breeds[0],breedInfoTable);
         })
         .catch((error) => { console.log(error) });
 }
+
+

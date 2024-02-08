@@ -104,4 +104,14 @@ function clearTable(parentObject) {
 
 }
 
-export { createOptions, createCarousel, createAdditionalInformation, API_KEY }
+function changeFetchingType(typeName, jsFileName){
+    const fetchChange = document.getElementById("change");
+    fetchChange.textContent = `Change fetch method to ${typeName}!`;
+    fetchChange.onclick = changeScriptFile
+    function changeScriptFile() {
+        const mainJSfile = document.getElementById("mainJSfile")
+        mainJSfile.setAttribute("src", jsFileName)
+    }
+}
+
+export { createOptions, createCarousel, createAdditionalInformation, changeFetchingType, API_KEY }
