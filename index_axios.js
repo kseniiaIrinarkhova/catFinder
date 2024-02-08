@@ -42,10 +42,31 @@ instance.defaults.headers.common['x-api-key'] = API_KEY;
  * - Add a console.log statement to indicate when requests begin.
  * - As an added challenge, try to do this on your own without referencing the lesson material.
  */
+/**
+ * 6. Next, we'll create a progress bar to indicate the request is in progress.
+ * - The progressBar element has already been created for you.
+ *  - You need only to modify its "width" style property to align with the request progress.
+ * - In your request interceptor, set the width of the progressBar element to 0%.
+ *  - This is to reset the progress with each request.
+ * - Research the axios onDownloadProgress config option.
+ * - Create a function "updateProgress" that receives a ProgressEvent object.
+ *  - Pass this function to the axios onDownloadProgress config option in your event handler.
+ * - console.log your ProgressEvent object within updateProgess, and familiarize yourself with its structure.
+ *  - Update the progress of the request using the properties you are given.
+ * - Note that we are not downloading a lot of data, so onDownloadProgress will likely only fire
+ *   once or twice per request to this API. This is still a concept worth familiarizing yourself
+ *   with for future projects.
+ */
+
+function updateProgress(ProgressEvent){
+console.log(ProgressEvent);
+progressBar.style.width = String(ProgressEvent.progress*100)+"%"
+}
 instance.interceptors.request.use((request) => {
     console.log("request begins")
     request.metadata = request.metadata || {};
     request.metadata.startTime = new Date().getTime();
+    progressBar.style.width = "0%"
     return request;
 }, (error) => {
     // Do something with request error
@@ -53,7 +74,7 @@ instance.interceptors.request.use((request) => {
 });
 instance.interceptors.response.use(
     (response) => {
-        console.log("request returns")
+        console.log("response returns")
         response.config.metadata.endTime = new Date().getTime();
         response.durationInMS = response.config.metadata.endTime - response.config.metadata.startTime;
         return response;
@@ -64,14 +85,6 @@ instance.interceptors.response.use(
         throw error;
     });
 
-/**
- * 1. Create an async function "initialLoad" that does the following:
- * - Retrieve a list of breeds from the cat API using fetch().
- * - Create new <options> for each of these breeds, and append them to breedSelect.
- *  - Each option should have a value attribute equal to the id of the breed.
- *  - Each option should display text equal to the name of the breed.
- * This function should execute immediately.
- */
 /**
  * Async function that gets breeds name from TheCat API and sdd them to select element
  */
@@ -103,20 +116,7 @@ function createOptions(objectList) {
         breedSelect.appendChild(optionElement);
     });
 }
-/**
- * 2. Create an event handler for breedSelect that does the following:
- * - Retrieve information on the selected breed from the cat API using fetch().
- *  - Make sure your request is receiving multiple array items!
- *  - Check the API documentation if you're only getting a single object.
- * - For each object in the response array, create a new element for the carousel.
- *  - Append each of these new elements to the carousel.
- * - Use the other data you have been given to create an informational section within the infoDump element.
- *  - Be creative with how you create DOM elements and HTML.
- *  - Feel free to edit index.html and styles.css to suit your needs, but be careful!
- *  - Remember that functionality comes first, but user experience and design are important.
- * - Each new selection should clear, re-populate, and restart the Carousel.
- * - Add a call to this function to the end of your initialLoad function above to create the initial carousel.
- */
+
 //event listener for changing selected option in select element
 breedSelect.addEventListener('change', selectBreed);
 
@@ -135,7 +135,7 @@ function getImages(breed_id) {
     //create url for getting not more than 10 random pictures of selected breed ID
     const url = `https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=${breed_id}`
     //fetch data
-    instance.get(url)
+    instance.get(url, {onDownloadProgress: updateProgress})
         .then((response) => {
  /*           return response.data;
         })
@@ -237,21 +237,7 @@ function changeScriptFile() {
 
 
 
-/**
- * 6. Next, we'll create a progress bar to indicate the request is in progress.
- * - The progressBar element has already been created for you.
- *  - You need only to modify its "width" style property to align with the request progress.
- * - In your request interceptor, set the width of the progressBar element to 0%.
- *  - This is to reset the progress with each request.
- * - Research the axios onDownloadProgress config option.
- * - Create a function "updateProgress" that receives a ProgressEvent object.
- *  - Pass this function to the axios onDownloadProgress config option in your event handler.
- * - console.log your ProgressEvent object within updateProgess, and familiarize yourself with its structure.
- *  - Update the progress of the request using the properties you are given.
- * - Note that we are not downloading a lot of data, so onDownloadProgress will likely only fire
- *   once or twice per request to this API. This is still a concept worth familiarizing yourself
- *   with for future projects.
- */
+
 
 /**
  * 7. As a final element of progress indication, add the following to your axios interceptors:
