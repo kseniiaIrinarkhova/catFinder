@@ -95,13 +95,22 @@ function getImages(breed_id){
             return response.json();
         })
         .then((data) => {
-Carousel.start();
-let item = Carousel.createCarouselItem(data[0].url,"Cat", data[0].id);
-Carousel.appendCarousel(item)
+            createCarousel(data);
+            
 
             console.log(data)
         })
         .catch((error) => { console.log(error) });
+}
+
+function createCarousel(imagesArray){
+    Carousel.clear();
+    Carousel.start();
+    imagesArray.forEach((image)=>{
+        let item = Carousel.createCarouselItem(image.url, `${image.breeds[0].name} example`, image.id);
+        Carousel.appendCarousel(item)
+    })
+    
 }
 /**
  * 3. Fork your own sandbox, creating a new one named "JavaScript Axios Lab."
