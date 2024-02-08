@@ -97,6 +97,9 @@ function getImages(breed_id){
         .then((data) => {
             //create carousel from images
             createCarousel(data);
+            console.log(data[0].breeds[0])
+            infoDump.textContent = data[0].breeds[0].description
+
         })
         .catch((error) => { console.log(error) });
 }

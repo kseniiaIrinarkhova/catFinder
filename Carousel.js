@@ -46,7 +46,7 @@ export function start() {
         const carouselWidth = $(".carousel-inner")[0].scrollWidth;
         const cardWidth = $(".carousel-item").width();
         let scrollPosition = 0;
-        $("#carouselExampleControls .carousel-control-next").unbind();
+        $("#carouselExampleControls .carousel-control-next").off('ckick');
         $("#carouselExampleControls .carousel-control-next").on(
             "click",
             function () {
@@ -59,7 +59,7 @@ export function start() {
                 }
             }
         );
-        $("#carouselExampleControls .carousel-control-prev").unbind();
+        $("#carouselExampleControls .carousel-control-prev").off('click');
         $("#carouselExampleControls .carousel-control-prev").on(
             "click",
             function () {
