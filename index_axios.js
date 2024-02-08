@@ -166,26 +166,14 @@ export async function favourite(imgId) {
         .catch((err) => { console.log(err) })
 }
 
-/**
- * 9. Test your favourite() function by creating a getFavourites() function.
- * - Use Axios to get all of your favourites from the cat API.
- * - Clear the carousel and display your favourites when the button is clicked.
- *  - You will have to bind this event listener to getFavouritesBtn yourself.
- *  - Hint: you already have all of the logic built for building a carousel.
- *    If that isn't in its own function, maybe it should be so you don't have to
- *    repeat yourself in this section.
- */
 getFavouritesBtn.addEventListener('click', getFavourites)
 
 function getFavourites(event) {
     let url = `https://api.thecatapi.com/v1/favourites?limit=20&sub_id=${Utilities.SUB_ID}`
     instance.get(url)
         .then((response) => {
-            if (response.data.length) {
-                console.log(response.data)
                 Utilities.createCarousel(response.data, false)
                 Utilities.createAdditionalInformation(null,breedInfoTable,false)
-            }
         })
         .catch((err) => { console.log(err) });
 }

@@ -34,23 +34,27 @@ function createCarousel(imagesArray, notFavorites = true) {
     //clear current carousel if we had it on page
     Carousel.clear();
     //start carousel creation
+    if (imagesArray.length) {
+        imagesArray.forEach((image) => {
+            //create a new carousel item
+            let item;
+            if (notFavorites) {
+                item = Carousel.createCarouselItem(image.url, `${image.breeds[0].name} example`, image.id);
+            }
+            else {
+                item = Carousel.createCarouselItem(image.image.url, `Cat image`, image.image.id);
+            }
+            //add item to carousel
+            Carousel.appendCarousel(item)
+        })
 
-    imagesArray.forEach((image) => {
-        //create a new carousel item
-        let item;
-        if(notFavorites){
-            item = Carousel.createCarouselItem(image.url, `${image.breeds[0].name} example`, image.id);
-        }
-        else{
-            item = Carousel.createCarouselItem(image.image.url, `Cat image`, image.image.id);
-        }
-        //add item to carousel
-        Carousel.appendCarousel(item)
-    })
-
-    Carousel.start();
-    //loop through all images
-
+        Carousel.start();
+        //loop through all images
+    }
+    else {
+        if (!notFavorites)
+            alert("There is no images in your favorite list!")
+    }
 }
 
 /**
@@ -59,10 +63,10 @@ function createCarousel(imagesArray, notFavorites = true) {
  * @param {object} parentObject table element that contains information about breed
  * @param {boolean} isVisible provide information if additional information is visible or not. By defaule - is visible
  */
-function createAdditionalInformation(breedInfo, parentObject,isVisible = true) {
+function createAdditionalInformation(breedInfo, parentObject, isVisible = true) {
     //clear table in case it has information about previous breed
     clearTable(parentObject)
-    if(!isVisible){
+    if (!isVisible) {
         parentObject.style.display = 'none';
     }
     //add information using key from breed object
@@ -118,7 +122,7 @@ function clearTable(parentObject) {
 
 }
 
-function changeFetchingType(typeName, jsFileName){
+function changeFetchingType(typeName, jsFileName) {
     const fetchChange = document.getElementById("change");
     fetchChange.textContent = `Change fetch method to ${typeName}!`;
     fetchChange.onclick = changeScriptFile
