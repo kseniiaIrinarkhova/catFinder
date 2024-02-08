@@ -70,6 +70,21 @@ function createOptions(objectList) {
  * - Each new selection should clear, re-populate, and restart the Carousel.
  * - Add a call to this function to the end of your initialLoad function above to create the initial carousel.
  */
+breedSelect.addEventListener('change', selectBreed);
+
+function selectBreed(event){
+    const breed_id = event.target.value;
+    const url =`https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=${breed_id}&api_key=${API_KEY}`
+    fetch(url)
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data)
+        })
+        .catch((error) => {console.log(error)});
+    console.log(event.target.value)
+}
 
 /**
  * 3. Fork your own sandbox, creating a new one named "JavaScript Axios Lab."
