@@ -14,6 +14,8 @@ const progressBar = document.getElementById("progressBar");
 const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 // The table with additional info element
 const breedInfoTable = document.getElementById("breedInfo");
+//body element
+const bodyElement = document.querySelector("body")
 
 // Step 0: Store your API key here for reference and easy access.
 const API_KEY = "live_S30DSBzPaRQQFXxA0mjdkXTwpBXwEUFvkol8yBJ3QPnD3UUItjNHtZCg608Yqi3w";
@@ -64,6 +66,7 @@ progressBar.style.width = String(ProgressEvent.progress*100)+"%"
 }
 instance.interceptors.request.use((request) => {
     console.log("request begins")
+    bodyElement.style.cursor = "progress"
     request.metadata = request.metadata || {};
     request.metadata.startTime = new Date().getTime();
     progressBar.style.width = "0%"
@@ -75,6 +78,7 @@ instance.interceptors.request.use((request) => {
 instance.interceptors.response.use(
     (response) => {
         console.log("response returns")
+        bodyElement.style.removeProperty("cursor")
         response.config.metadata.endTime = new Date().getTime();
         response.durationInMS = response.config.metadata.endTime - response.config.metadata.startTime;
         return response;
