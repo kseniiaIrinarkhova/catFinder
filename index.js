@@ -1,5 +1,6 @@
 import * as Carousel from "./Carousel.js";
 import axios from "axios";
+import * as Utilities from './utilities.js'
 //const axios = Window.axios;
 
 // The breed selection input element.
@@ -39,7 +40,8 @@ const API_KEY = "live_S30DSBzPaRQQFXxA0mjdkXTwpBXwEUFvkol8yBJ3QPnD3UUItjNHtZCg60
     //get JSON list of breeds
     const breeds = await response.json();
     //create options and add them to select
-    createOptions(breeds);
+    //createOptions(breeds);
+    Utilities.createOptions(breeds, breedSelect);
     //add images for first selected breed
     getImages(breeds[0].id);
 })();
