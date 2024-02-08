@@ -112,7 +112,13 @@ function getImages(breed_id) {
             //create carousel from images
             Utilities.createCarousel(response.data);
             //create table with additional information about breed
-            Utilities.createAdditionalInformation(response.data[0].breeds[0], breedInfoTable)
+            try {
+                Utilities.createAdditionalInformation(response.data[0].breeds[0], breedInfoTable)
+            }
+            catch {
+                alert(`Unfortunately we don't have any information about this breed`)
+                Utilities.createAdditionalInformation({}, breedInfoTable, false)
+            }
         })
         .catch((error) => { console.log(error) });
 }
@@ -172,8 +178,8 @@ function getFavourites(event) {
     let url = `https://api.thecatapi.com/v1/favourites?limit=20&sub_id=${Utilities.SUB_ID}`
     instance.get(url)
         .then((response) => {
-                Utilities.createCarousel(response.data, false)
-                Utilities.createAdditionalInformation(null,breedInfoTable,false)
+            Utilities.createCarousel(response.data, false)
+            Utilities.createAdditionalInformation(null, breedInfoTable, false)
         })
         .catch((err) => { console.log(err) });
 }
