@@ -1,5 +1,5 @@
 import * as Carousel from "./Carousel.js";
- import axios from "axios";
+import axios from "axios";
 //const axios = Window.axios;
 
 // The breed selection input element.
@@ -81,14 +81,14 @@ breedSelect.addEventListener('change', selectBreed);
  * Event handler that takes images for selected breed and shows them in carousel
  * @param {object} event 
  */
-function selectBreed(event){
+function selectBreed(event) {
     //take value of selected option - it's our breed ID
     const breed_id = event.target.value;
     getImages(breed_id)
 }
 
 
-function getImages(breed_id){
+function getImages(breed_id) {
     //create url for getting not more than 10 random pictures of selected breed ID
     const url = `https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=${breed_id}&api_key=${API_KEY}`
     //fetch data
@@ -100,7 +100,7 @@ function getImages(breed_id){
             //create carousel from images
             createCarousel(data);
             createAdditionalInformation(data[0].breeds[0]);
-            
+
         })
         .catch((error) => { console.log(error) });
 }
@@ -109,38 +109,77 @@ function getImages(breed_id){
  * Helper function that create the carousel object and add carousel items based on data from API
  * @param {list of objects} imagesArray 
  */
-function createCarousel(imagesArray){
+function createCarousel(imagesArray) {
     //clear current carousel if we had it on page
     Carousel.clear();
     //start carousel creation
     Carousel.start();
     //loop through all images
-    imagesArray.forEach((image)=>{
+    imagesArray.forEach((image) => {
         //create a new carousel item
         let item = Carousel.createCarouselItem(image.url, `${image.breeds[0].name} example`, image.id);
         //add item to carousel
         Carousel.appendCarousel(item)
     })
-    
+
+}
+/**
+ * Helper function that fulfill table with information about breed
+ * @param {object} breedInfo 
+ */
+function createAdditionalInformation(breedInfo) {
+    //clear table in case it has information about previous breed
+    clearTable()
+    //add information using key from breed object
+    for (let parameter_key in breedInfo) {
+        try {
+            let td = {};
+            switch (parameter_key) {
+                case "weight":
+                    //add information information in different units of measure
+                    td = breedInfoTable.querySelector(`#breed-${parameter_key}`)
+                    td.textContent = `${breedInfo[parameter_key].imperial} lb or ${breedInfo[parameter_key].metric} kg`;
+                    break;
+                case "alt_names":
+                    //add alternative names to NAME cell if they exist
+                    td = breedInfoTable.querySelector(`#breed-name`)
+                    if (breedInfo[parameter_key]) td.textContent += ` (${breedInfo[parameter_key]}) `;
+                    break;
+                case "wikipedia_url":
+                    //add link instead of text
+                    let anchor = breedInfoTable.querySelector(`#breed-${parameter_key}`)
+                    anchor.setAttribute("href", breedInfo[parameter_key])
+                    break
+                default:
+                    //for all cells that contains id with information add data
+                    td = breedInfoTable.querySelector(`#breed-${parameter_key}`)
+                    //change 0 data to No and 1 - to Yes, leave other type as it is
+                    td.textContent = breedInfo[parameter_key] === 0 ? "no" : breedInfo[parameter_key] === 1 ? "yes" : breedInfo[parameter_key];
+                    break;
+            }
+        }
+        //we could find some parameters that we don't use in table, just skip them
+        catch (error) {
+            continue;
+        }
+    }
 }
 
-function createAdditionalInformation(breedInfo){
-for(let parameter in breedInfo){
-    console.log(parameter)
-    console.log(breedInfoTable)
-    try{
-        
-        const td = breedInfoTable.querySelector(`#breed-${parameter}`)
-        td.textContent = breedInfo[parameter];
-    }
-    catch(error){
-        console.log(error)
-        continue;
-    }
-}
+/**
+ * Helper function that cleans all data in table
+ */
+function clearTable() {
+    const name = breedInfoTable.querySelector("#breed-name")
+    name.textContent="";
+    const cells = breedInfoTable.querySelectorAll("td");
+    for (let index = 0; index < cells.length; index++) {
+        if (cells[index].getAttribute('id')) {
+            console.log(cells[index]);
+            cells[index].textContent = "";
+        }      
 
+    }
 
-console.log(breedInfo);
 }
 
 /**
