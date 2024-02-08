@@ -25,6 +25,7 @@ const instance = axios.create();
 
 // Alter defaults after instance has been created
 instance.defaults.headers.common['x-api-key'] = Utilities.API_KEY;
+instance.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8';
 
 
 //Interceptors for request
@@ -129,6 +130,15 @@ function getImages(breed_id) {
  */
 export async function favourite(imgId) {
     // your code here
+    const requestBody = {
+        "image_id": imgId,
+        "sub_id": "seny-iri"
+    }
+    const url = "https://api.thecatapi.com/v1/favourites"
+
+    const response = await instance.post(url, requestBody);
+    console.log(response);
+    return response;
 }
 
 /**
