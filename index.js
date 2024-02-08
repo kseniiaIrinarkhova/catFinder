@@ -38,6 +38,8 @@ const API_KEY = "live_S30DSBzPaRQQFXxA0mjdkXTwpBXwEUFvkol8yBJ3QPnD3UUItjNHtZCg60
     const breeds = await response.json();
     //create options and add them to select
     createOptions(breeds);
+    //add images for first selected breed
+    getImages(breeds[0].id);
 })();
 
 /**
@@ -70,22 +72,34 @@ function createOptions(objectList) {
  * - Each new selection should clear, re-populate, and restart the Carousel.
  * - Add a call to this function to the end of your initialLoad function above to create the initial carousel.
  */
+//event listener for changing selected option in select element
 breedSelect.addEventListener('change', selectBreed);
 
+/**
+ * Event handler that takes images for selected breed and shows them in carousel
+ * @param {object} event 
+ */
 function selectBreed(event){
+    //take value of selected option - it's our breed ID
     const breed_id = event.target.value;
-    const url =`https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=${breed_id}&api_key=${API_KEY}`
+    getImages(breed_id)
+}
+
+
+function getImages(breed_id){
+    //create url for getting not more than 10 random pictures of selected breed ID
+    const url = `https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=${breed_id}&api_key=${API_KEY}`
+    //fetch data
     fetch(url)
         .then((response) => {
             return response.json();
         })
         .then((data) => {
+
             console.log(data)
         })
-        .catch((error) => {console.log(error)});
-    console.log(event.target.value)
+        .catch((error) => { console.log(error) });
 }
-
 /**
  * 3. Fork your own sandbox, creating a new one named "JavaScript Axios Lab."
  */
