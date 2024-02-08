@@ -17,11 +17,52 @@ const breedInfoTable = document.getElementById("breedInfo");
 
 // Step 0: Store your API key here for reference and easy access.
 const API_KEY = "live_S30DSBzPaRQQFXxA0mjdkXTwpBXwEUFvkol8yBJ3QPnD3UUItjNHtZCg608Yqi3w";
+
+/**
+ * 3. Fork your own sandbox, creating a new one named "JavaScript Axios Lab."
+ */
+/**
+ * 4. Change all of your fetch() functions to axios!
+ * - axios has already been imported for you within index.js.
+ * - If you've done everything correctly up to this point, this should be simple.
+ * - If it is not simple, take a moment to re-evaluate your original code.
+ * - Hint: Axios has the ability to set default headers. Use this to your advantage
+ *   by setting a default header with your API key so that you do not have to
+ *   send it manually with all of your requests! You can also set a default base URL!
+ */
 // Set config defaults when creating the instance
 const instance = axios.create();
 
 // Alter defaults after instance has been created
 instance.defaults.headers.common['x-api-key'] = API_KEY;
+
+/**
+ * 5. Add axios interceptors to log the time between request and response to the console.
+ * - Hint: you already have access to code that does this!
+ * - Add a console.log statement to indicate when requests begin.
+ * - As an added challenge, try to do this on your own without referencing the lesson material.
+ */
+instance.interceptors.request.use((request) => {
+    console.log("request begins")
+    request.metadata = request.metadata || {};
+    request.metadata.startTime = new Date().getTime();
+    return request;
+}, (error) => {
+    // Do something with request error
+    return Promise.reject(error);
+});
+instance.interceptors.response.use(
+    (response) => {
+        console.log("request returns")
+        response.config.metadata.endTime = new Date().getTime();
+        response.durationInMS = response.config.metadata.endTime - response.config.metadata.startTime;
+        return response;
+    },
+    (error) => {
+        error.config.metadata.endTime = new Date().getTime();
+        error.durationInMS = error.config.metadata.endTime - error.config.metadata.startTime;
+        throw error;
+    });
 
 /**
  * 1. Create an async function "initialLoad" that does the following:
@@ -38,11 +79,12 @@ instance.defaults.headers.common['x-api-key'] = API_KEY;
     //API end point to get breeds
     const url = `https://api.thecatapi.com/v1/breeds`;
     //get result
-    const response = await instance.get(url);
+    const {data, durationInMS} = await instance.get(url);
+    console.log(durationInMS)
     //create options and add them to select
-    createOptions(response.data);
+    createOptions(data);
     //add images for first selected breed
-    getImages(response.data[0].id);
+    getImages(data[0].id);
 })();
 
 /**
@@ -95,12 +137,13 @@ function getImages(breed_id) {
     //fetch data
     instance.get(url)
         .then((response) => {
-            return response.data;
+ /*           return response.data;
         })
-        .then((data) => {
+        .then((data) => {*/
             //create carousel from images
-            createCarousel(data);
-            createAdditionalInformation(data[0].breeds[0]);
+            createCarousel(response.data);
+            createAdditionalInformation(response.data[0].breeds[0]);
+            console.log(response.durationInMS)
 
         })
         .catch((error) => { console.log(error) });
@@ -192,24 +235,7 @@ function changeScriptFile() {
 }
 
 
-/**
- * 3. Fork your own sandbox, creating a new one named "JavaScript Axios Lab."
- */
-/**
- * 4. Change all of your fetch() functions to axios!
- * - axios has already been imported for you within index.js.
- * - If you've done everything correctly up to this point, this should be simple.
- * - If it is not simple, take a moment to re-evaluate your original code.
- * - Hint: Axios has the ability to set default headers. Use this to your advantage
- *   by setting a default header with your API key so that you do not have to
- *   send it manually with all of your requests! You can also set a default base URL!
- */
-/**
- * 5. Add axios interceptors to log the time between request and response to the console.
- * - Hint: you already have access to code that does this!
- * - Add a console.log statement to indicate when requests begin.
- * - As an added challenge, try to do this on your own without referencing the lesson material.
- */
+
 
 /**
  * 6. Next, we'll create a progress bar to indicate the request is in progress.
