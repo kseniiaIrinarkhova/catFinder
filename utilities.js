@@ -28,6 +28,7 @@ function createOptions(objectList, parentObject) {
 /**
  * Helper function that create the carousel object and add carousel items based on data from API
  * @param {list of objects} imagesArray list of objects from API that represents images
+ * @param {boolean} notFavorites flag that indicates for breeds or favorites we create carousel. By default - for breeds
  */
 function createCarousel(imagesArray, notFavorites = true) {
     //clear current carousel if we had it on page
@@ -56,12 +57,17 @@ function createCarousel(imagesArray, notFavorites = true) {
  * Helper function that fulfill table with information about breed
  * @param {object} breedInfo object that collect breed information
  * @param {object} parentObject table element that contains information about breed
+ * @param {boolean} isVisible provide information if additional information is visible or not. By defaule - is visible
  */
-function createAdditionalInformation(breedInfo, parentObject) {
+function createAdditionalInformation(breedInfo, parentObject,isVisible = true) {
     //clear table in case it has information about previous breed
     clearTable(parentObject)
+    if(!isVisible){
+        parentObject.style.display = 'none';
+    }
     //add information using key from breed object
     for (let parameter_key in breedInfo) {
+        parentObject.style.removeProperty("display");
         try {
             let td = {};
             switch (parameter_key) {

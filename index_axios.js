@@ -184,6 +184,7 @@ function getFavourites(event) {
             if (response.data.length) {
                 console.log(response.data)
                 Utilities.createCarousel(response.data, false)
+                Utilities.createAdditionalInformation(null,breedInfoTable,false)
             }
         })
         .catch((err) => { console.log(err) });
