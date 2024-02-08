@@ -31,17 +31,18 @@ const API_KEY = "live_S30DSBzPaRQQFXxA0mjdkXTwpBXwEUFvkol8yBJ3QPnD3UUItjNHtZCg60
     //API end point to get breeds
     const url = `https://api.thecatapi.com/v1/breeds`;
     //get result
-    const response = await fetch(url, {
+    const response = await axios.get(url, {
         headers: {
             'x-api-key': API_KEY
         }
     });
+    console.log(response.data)
     //get JSON list of breeds
-    const breeds = await response.json();
+    //const breeds = await response.json();
     //create options and add them to select
-    createOptions(breeds);
+    createOptions(response.data);
     //add images for first selected breed
-    getImages(breeds[0].id);
+    getImages(response.data[0].id);
 })();
 
 /**
