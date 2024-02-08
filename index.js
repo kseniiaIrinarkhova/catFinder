@@ -113,14 +113,16 @@ function createCarousel(imagesArray) {
     //clear current carousel if we had it on page
     Carousel.clear();
     //start carousel creation
-    Carousel.start();
-    //loop through all images
+    
     imagesArray.forEach((image) => {
         //create a new carousel item
         let item = Carousel.createCarouselItem(image.url, `${image.breeds[0].name} example`, image.id);
         //add item to carousel
         Carousel.appendCarousel(item)
     })
+
+    Carousel.start();
+    //loop through all images
 
 }
 /**

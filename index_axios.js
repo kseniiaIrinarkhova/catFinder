@@ -160,8 +160,7 @@ function getImages(breed_id) {
 function createCarousel(imagesArray) {
     //clear current carousel if we had it on page
     Carousel.clear();
-    //start carousel creation
-    Carousel.start();
+    
     //loop through all images
     imagesArray.forEach((image) => {
         //create a new carousel item
@@ -169,7 +168,8 @@ function createCarousel(imagesArray) {
         //add item to carousel
         Carousel.appendCarousel(item)
     })
-
+    //start carousel creation
+    Carousel.start();
 }
 /**
  * Helper function that fulfill table with information about breed
