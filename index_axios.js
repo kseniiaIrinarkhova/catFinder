@@ -1,5 +1,7 @@
 import * as Carousel from "./Carousel.js";
 import axios from "axios";
+//import helper functions
+import * as Utilities from './utilities.js'
 //const axios = Window.axios;
 
 
@@ -99,7 +101,8 @@ instance.interceptors.response.use(
     const {data, durationInMS} = await instance.get(url);
     console.log(durationInMS)
     //create options and add them to select
-    createOptions(data);
+    // createOptions(data);
+    Utilities.createOptions(data,breedSelect);
     //add images for first selected breed
     getImages(data[0].id);
 })();
@@ -145,8 +148,9 @@ function getImages(breed_id) {
         })
         .then((data) => {*/
             //create carousel from images
-            createCarousel(response.data);
-            createAdditionalInformation(response.data[0].breeds[0]);
+            //createCarousel(response.data);
+            Utilities.createCarousel(response.data);
+            Utilities.createAdditionalInformation(response.data[0].breeds[0], breedInfoTable)
             console.log(response.durationInMS)
 
         })

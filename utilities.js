@@ -1,6 +1,14 @@
+//import carousel functions
+import * as Carousel from "./Carousel.js";
+
+// Step 0: Store your API key here for reference and easy access.
+const API_KEY = "live_S30DSBzPaRQQFXxA0mjdkXTwpBXwEUFvkol8yBJ3QPnD3UUItjNHtZCg608Yqi3w";
+
+
 /**
  * Helper function that creates options for select element and add them to DOM
- * @param {list of objects} objectList 
+ * @param {list of objects} objectList list of items that would be options
+ * @param {DOM object} parentObject referance to select element
  */
 function createOptions(objectList, parentObject) {
 
@@ -17,7 +25,7 @@ function createOptions(objectList, parentObject) {
 
 /**
  * Helper function that create the carousel object and add carousel items based on data from API
- * @param {list of objects} imagesArray 
+ * @param {list of objects} imagesArray list of objects from API that represents images
  */
 function createCarousel(imagesArray) {
     //clear current carousel if we had it on page
@@ -38,11 +46,12 @@ function createCarousel(imagesArray) {
 
 /**
  * Helper function that fulfill table with information about breed
- * @param {object} breedInfo 
+ * @param {object} breedInfo object that collect breed information
+ * @param {object} parentObject table element that contains information about breed
  */
-function createAdditionalInformation(breedInfo) {
+function createAdditionalInformation(breedInfo, parentObject) {
     //clear table in case it has information about previous breed
-    clearTable()
+    clearTable(parentObject)
     //add information using key from breed object
     for (let parameter_key in breedInfo) {
         try {
@@ -50,22 +59,22 @@ function createAdditionalInformation(breedInfo) {
             switch (parameter_key) {
                 case "weight":
                     //add information information in different units of measure
-                    td = breedInfoTable.querySelector(`#breed-${parameter_key}`)
+                    td = parentObject.querySelector(`#breed-${parameter_key}`)
                     td.textContent = `${breedInfo[parameter_key].imperial} lb or ${breedInfo[parameter_key].metric} kg`;
                     break;
                 case "alt_names":
                     //add alternative names to NAME cell if they exist
-                    td = breedInfoTable.querySelector(`#breed-name`)
+                    td = parentObject.querySelector(`#breed-name`)
                     if (breedInfo[parameter_key]) td.textContent += ` (${breedInfo[parameter_key]}) `;
                     break;
                 case "wikipedia_url":
                     //add link instead of text
-                    let anchor = breedInfoTable.querySelector(`#breed-${parameter_key}`)
+                    let anchor = parentObject.querySelector(`#breed-${parameter_key}`)
                     anchor.setAttribute("href", breedInfo[parameter_key])
                     break
                 default:
                     //for all cells that contains id with information add data
-                    td = breedInfoTable.querySelector(`#breed-${parameter_key}`)
+                    td = parentObject.querySelector(`#breed-${parameter_key}`)
                     //change 0 data to No and 1 - to Yes, leave other type as it is
                     td.textContent = breedInfo[parameter_key] === 0 ? "no" : breedInfo[parameter_key] === 1 ? "yes" : breedInfo[parameter_key];
                     break;
@@ -80,11 +89,12 @@ function createAdditionalInformation(breedInfo) {
 
 /**
  * Helper function that cleans all data in table
+ * @param {object} parentObject table element that contains information about breed
  */
-function clearTable() {
-    const name = breedInfoTable.querySelector("#breed-name")
+function clearTable(parentObject) {
+    const name = parentObject.querySelector("#breed-name")
     name.textContent = "";
-    const cells = breedInfoTable.querySelectorAll("td");
+    const cells = parentObject.querySelectorAll("td");
     for (let index = 0; index < cells.length; index++) {
         if (cells[index].getAttribute('id')) {
             cells[index].textContent = "";
@@ -94,4 +104,4 @@ function clearTable() {
 
 }
 
-export { createOptions, createCarousel, createAdditionalInformation }
+export { createOptions, createCarousel, createAdditionalInformation, API_KEY }
