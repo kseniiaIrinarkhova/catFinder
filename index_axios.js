@@ -126,44 +126,44 @@ export async function favourite(imgId) {
     let url = `https://api.thecatapi.com/v1/favourites?sub_id=${Utilities.SUB_ID}&image_id=${imgId}`
     //let response = await instance.get(url);
     instance.get(url)
-    .then((response)=>{
-        //if we get data - then picture in favorites
-        if(response.data.length){
-            //take this favoriteID from response
-            url = `https://api.thecatapi.com/v1/favourites/${response.data[0].id}`
-            //try to delete image from favorites
-            return instance.delete(url)
-            .then((delResponse)=>{
-                //if successfull - show the alert
-                alert("Image was deleted from your favorites!")
-                return delResponse;
-            })
-            .catch((err)=>{throw err});
-        }
-        else{
-            //if we don't have picture with imgID in favorites - add it
-            //prepate body of post request
-            const requestBody = {
-                "image_id": imgId, //image id
-                "sub_id": Utilities.SUB_ID //user ID
+        .then((response) => {
+            //if we get data - then picture in favorites
+            if (response.data.length) {
+                //take this favoriteID from response
+                url = `https://api.thecatapi.com/v1/favourites/${response.data[0].id}`
+                //try to delete image from favorites
+                return instance.delete(url)
+                    .then((delResponse) => {
+                        //if successfull - show the alert
+                        alert("Image was deleted from your favorites!")
+                        return delResponse;
+                    })
+                    .catch((err) => { throw err });
             }
-            //change API end point url
-            url = "https://api.thecatapi.com/v1/favourites"
-            //try to post image to favorites
-            return instance.post(url, requestBody)
-            .then((res)=>{
-                //if successful - show alert
-                alert("Image was added to your favorites!")
-                return res;
-            })
-            .catch((err)=>{throw err});
-        }
-    })
-    .then((response)=>{
-        //if all actions are successful - return the responce
-        return response;
-    })
-    .catch((err)=>{console.log(err)})
+            else {
+                //if we don't have picture with imgID in favorites - add it
+                //prepate body of post request
+                const requestBody = {
+                    "image_id": imgId, //image id
+                    "sub_id": Utilities.SUB_ID //user ID
+                }
+                //change API end point url
+                url = "https://api.thecatapi.com/v1/favourites"
+                //try to post image to favorites
+                return instance.post(url, requestBody)
+                    .then((res) => {
+                        //if successful - show alert
+                        alert("Image was added to your favorites!")
+                        return res;
+                    })
+                    .catch((err) => { throw err });
+            }
+        })
+        .then((response) => {
+            //if all actions are successful - return the responce
+            return response;
+        })
+        .catch((err) => { console.log(err) })
 }
 
 /**
@@ -175,7 +175,19 @@ export async function favourite(imgId) {
  *    If that isn't in its own function, maybe it should be so you don't have to
  *    repeat yourself in this section.
  */
+getFavouritesBtn.addEventListener('click', getFavourites)
 
+function getFavourites(event) {
+    let url = `https://api.thecatapi.com/v1/favourites?limit=20&sub_id=${Utilities.SUB_ID}`
+    instance.get(url)
+        .then((response) => {
+            if (response.data.length) {
+                console.log(response.data)
+                Utilities.createCarousel(response.data, false)
+            }
+        })
+        .catch((err) => { console.log(err) });
+}
 /**
  * 10. Test your site, thoroughly!
  * - What happens when you try to load the Malayan breed?

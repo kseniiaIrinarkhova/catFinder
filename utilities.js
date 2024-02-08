@@ -29,14 +29,20 @@ function createOptions(objectList, parentObject) {
  * Helper function that create the carousel object and add carousel items based on data from API
  * @param {list of objects} imagesArray list of objects from API that represents images
  */
-function createCarousel(imagesArray) {
+function createCarousel(imagesArray, notFavorites = true) {
     //clear current carousel if we had it on page
     Carousel.clear();
     //start carousel creation
 
     imagesArray.forEach((image) => {
         //create a new carousel item
-        let item = Carousel.createCarouselItem(image.url, `${image.breeds[0].name} example`, image.id);
+        let item;
+        if(notFavorites){
+            item = Carousel.createCarouselItem(image.url, `${image.breeds[0].name} example`, image.id);
+        }
+        else{
+            item = Carousel.createCarouselItem(image.image.url, `Cat image`, image.image.id);
+        }
         //add item to carousel
         Carousel.appendCarousel(item)
     })
