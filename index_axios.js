@@ -2,6 +2,8 @@ import * as Carousel from "./Carousel.js";
 import axios from "axios";
 //const axios = Window.axios;
 
+
+
 // The breed selection input element.
 const breedSelect = document.getElementById("breedSelect");
 // The information section div element.
@@ -15,6 +17,11 @@ const breedInfoTable = document.getElementById("breedInfo");
 
 // Step 0: Store your API key here for reference and easy access.
 const API_KEY = "live_S30DSBzPaRQQFXxA0mjdkXTwpBXwEUFvkol8yBJ3QPnD3UUItjNHtZCg608Yqi3w";
+// Set config defaults when creating the instance
+const instance = axios.create();
+
+// Alter defaults after instance has been created
+instance.defaults.headers.common['x-api-key'] = API_KEY;
 
 /**
  * 1. Create an async function "initialLoad" that does the following:
@@ -31,14 +38,7 @@ const API_KEY = "live_S30DSBzPaRQQFXxA0mjdkXTwpBXwEUFvkol8yBJ3QPnD3UUItjNHtZCg60
     //API end point to get breeds
     const url = `https://api.thecatapi.com/v1/breeds`;
     //get result
-    const response = await axios.get(url, {
-        headers: {
-            'x-api-key': API_KEY
-        }
-    });
-    console.log(response.data)
-    //get JSON list of breeds
-    //const breeds = await response.json();
+    const response = await instance.get(url);
     //create options and add them to select
     createOptions(response.data);
     //add images for first selected breed
@@ -91,11 +91,11 @@ function selectBreed(event) {
 
 function getImages(breed_id) {
     //create url for getting not more than 10 random pictures of selected breed ID
-    const url = `https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=${breed_id}&api_key=${API_KEY}`
+    const url = `https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=${breed_id}`
     //fetch data
-    fetch(url)
+    instance.get(url)
         .then((response) => {
-            return response.json();
+            return response.data;
         })
         .then((data) => {
             //create carousel from images
