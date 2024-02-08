@@ -10,6 +10,8 @@ const infoDump = document.getElementById("infoDump");
 const progressBar = document.getElementById("progressBar");
 // The get favourites button element.
 const getFavouritesBtn = document.getElementById("getFavouritesBtn");
+// The table with additional info element
+const breedInfoTable = document.getElementById("breedInfo");
 
 // Step 0: Store your API key here for reference and easy access.
 const API_KEY = "live_S30DSBzPaRQQFXxA0mjdkXTwpBXwEUFvkol8yBJ3QPnD3UUItjNHtZCg608Yqi3w";
@@ -97,9 +99,8 @@ function getImages(breed_id){
         .then((data) => {
             //create carousel from images
             createCarousel(data);
-            console.log(data[0].breeds[0])
-            infoDump.textContent = data[0].breeds[0].description
-
+            createAdditionalInformation(data[0].breeds[0]);
+            
         })
         .catch((error) => { console.log(error) });
 }
@@ -122,6 +123,26 @@ function createCarousel(imagesArray){
     })
     
 }
+
+function createAdditionalInformation(breedInfo){
+for(let parameter in breedInfo){
+    console.log(parameter)
+    console.log(breedInfoTable)
+    try{
+        
+        const td = breedInfoTable.querySelector(`#breed-${parameter}`)
+        td.textContent = breedInfo[parameter];
+    }
+    catch(error){
+        console.log(error)
+        continue;
+    }
+}
+
+
+console.log(breedInfo);
+}
+
 /**
  * 3. Fork your own sandbox, creating a new one named "JavaScript Axios Lab."
  */
