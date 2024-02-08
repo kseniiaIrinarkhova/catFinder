@@ -95,19 +95,26 @@ function getImages(breed_id){
             return response.json();
         })
         .then((data) => {
+            //create carousel from images
             createCarousel(data);
-            
-
-            console.log(data)
         })
         .catch((error) => { console.log(error) });
 }
 
+/**
+ * Helper function that create the carousel object and add carousel items based on data from API
+ * @param {list of objects} imagesArray 
+ */
 function createCarousel(imagesArray){
+    //clear current carousel if we had it on page
     Carousel.clear();
+    //start carousel creation
     Carousel.start();
+    //loop through all images
     imagesArray.forEach((image)=>{
+        //create a new carousel item
         let item = Carousel.createCarouselItem(image.url, `${image.breeds[0].name} example`, image.id);
+        //add item to carousel
         Carousel.appendCarousel(item)
     })
     
