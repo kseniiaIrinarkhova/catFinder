@@ -4,8 +4,6 @@ import * as Utilities from './utilities.js'
 
 // The breed selection input element.
 const breedSelect = document.getElementById("breedSelect");
-// The information section div element.
-const infoDump = document.getElementById("infoDump");
 // The progress bar div element.
 const progressBar = document.getElementById("progressBar");
 // The get favourites button element.

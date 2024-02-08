@@ -5,10 +5,11 @@ import * as Utilities from './utilities.js'
 const breedSelect = document.getElementById("breedSelect");
 // The table with additional info element
 const breedInfoTable = document.getElementById("breedInfo");
+// The get favourites button element.
+const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 
 
-//provide a link to page with another type of fetching
-Utilities.changeFetchingType("Axios", "index_axios.js")
+
 
 /**
  * Async function that gets breeds name from TheCat API and sdd them to select element
@@ -30,6 +31,8 @@ Utilities.changeFetchingType("Axios", "index_axios.js")
     getImages(breeds[0].id);
 })();
 
+//provide a link to page with another type of fetching
+Utilities.changeFetchingType("Axios", "index_axios.js")
 
 //event listener for changing selected option in select element
 breedSelect.addEventListener('change', selectBreed);
@@ -60,9 +63,13 @@ function getImages(breed_id) {
             //create carousel from images
             Utilities.createCarousel(data);
             //create table with additional information about breed
-            Utilities.createAdditionalInformation(data[0].breeds[0],breedInfoTable);
+            try {
+                Utilities.createAdditionalInformation(data[0].breeds[0], breedInfoTable)
+            }
+            catch {
+                alert(`Unfortunately we don't have any information about this breed`)
+                Utilities.createAdditionalInformation({}, breedInfoTable, false)
+            }
         })
         .catch((error) => { console.log(error) });
 }
-
-
